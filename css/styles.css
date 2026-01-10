@@ -656,57 +656,77 @@ body {
   margin: 0;
 }
 
-.name-input-section {
+.social-media-section {
   margin-top: 2rem;
   padding-top: 2rem;
   border-top: 2px solid var(--pink-200);
 }
 
-.name-input-section h3 {
+.social-media-section h3 {
   font-size: 1.25rem;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 0.5rem;
 }
 
-.name-input-section p {
+.social-media-section p {
   font-size: 0.95rem;
   color: #6b7280;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.name-input-group {
+.social-links {
   display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
-}
-
-.name-input {
-  flex: 1;
-  padding: 0.75rem 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--pink-50);
   border: 2px solid var(--pink-200);
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-.name-input:focus {
-  outline: none;
-  border-color: var(--rose-500);
-}
-
-.clear-btn {
-  padding: 0.75rem 1.5rem;
-  background: #e5e7eb;
-  color: #374151;
-  border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
+  text-decoration: none;
+  color: #1f2937;
+  transition: all 0.3s;
   font-weight: 500;
-  cursor: pointer;
-  transition: background 0.3s;
 }
 
-.clear-btn:hover {
-  background: #d1d5db;
+.social-link:hover {
+  background: var(--pink-100);
+  border-color: var(--rose-400);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.social-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.social-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.instagram-icon {
+  color: #E4405F;
+}
+
+.xiaohongshu-icon {
+  color: #FF2442;
+}
+
+.social-text {
+  font-size: 1rem;
+  color: #1f2937;
 }
 
 /* ============================================
@@ -746,8 +766,13 @@ body {
     font-size: 2.5rem;
   }
 
-  .name-input-group {
+  .social-links {
     flex-direction: column;
+  }
+
+  .social-link {
+    width: 100%;
+    justify-content: center;
   }
 
   .features-title {
