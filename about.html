@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Skincare Ingredient Scout</title>
+  
+  <!-- 引入外部 CSS 文件 -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ============================================
+       Navbar
+       ============================================ -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a href="index.html" class="logo">Skincare Ingredient Scout</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       About Section
+       ============================================ -->
+  <section class="about-section">
+    <!-- About Hero -->
+    <div class="about-hero">
+      <div class="about-hero-background"></div>
+      <div class="about-hero-overlay"></div>
+      <div class="about-hero-content">
+        <h1 class="about-hero-title">About Us</h1>
+      </div>
+    </div>
+
+    <!-- About Content -->
+    <div class="about-container">
+      <div class="about-card">
+        <h2>Project Mission</h2>
+        <p>
+          Skincare Ingredient Scout is an AI-powered platform designed to help users identify
+          potential conflicts and interactions between skincare ingredients, ensuring safer
+          and more effective skincare routines.
+        </p>
+
+        <!-- Team Section -->
+        <div class="team-section">
+          <h3>Team</h3>
+          <div id="team-members">
+            <!-- Team Member 1 -->
+            <div class="team-member">
+              <div class="team-avatar">AX</div>
+              <div class="team-info">
+                <h4>Aiza</h4>
+                <p class="team-role">Project Lead</p>
+                <p class="team-bio">I'm Aiza Xu from the internationnal department in the beijing 101 id school. Since i am a teenager, frustrating with thw acnes on my face. My mom bought me some luxury skincare product to release that issue. However, i find that some times when i use the product after using some make-up, i have a sense of burn and my face will become reddish. My friends in the project also have similar experience , that why we become a group. I watched some news about the hazard of mixing use of skincare products. We are willing to be a helper, a reminder to remind people, eapecially teenagers, telling them which products they can't use together and which they can.</p>
+              </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="team-member">
+              <div class="team-avatar">SW</div>
+              <div class="team-info">
+                <h4>Summer Wang</h4>
+                <p class="team-role">AI/ML Engineer</p>
+                <p class="team-bio">I'm Summer from the international department in Nanjing Foreign Language School. I noticed that many people mix different skincare products without noticing some of them may conflict, causing irreversible consequences, like red skin, sensitive skin, or even allergy- just like what happens to my mom. These issue encourage me to join the "skincare ingredient scout" project and use my own way to help them. Maybe doing some research and uncover the science behind the ingredient conflicts can help. I hope my work can help others make smarter choices for their skin.</p>
+              </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="team-member">
+              <div class="team-avatar">AY</div>
+              <div class="team-info">
+                <h4>Angelina Yu</h4>
+                <p class="team-role">Frontend Developer</p>
+                <p class="team-bio">Hi, I am Angelina Yu from WHHest Hill High ichooln Sandiego. I became interested in t study e conflicts of skincare produce and makeup ingredient because I am alosso a teenager and I experienced skin problem on my own body, so I started searching for skincare product online. I used the highly popular products available on the internet, but the situation didn't improve. So I'm quite confused as to what kind of product would actually improve the condition of my skin. I believe there are many teenagers who are just as confused as I am. If my team and I were able to design a website that could assist teenagers in selecting skincare products, it will help them a lot. </p>
+              </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="team-member">
+              <div class="team-avatar">GY</div>
+              <div class="team-info">
+                <h4>Ginger Yin</h4>
+                <p class="team-role">Data Scientist</p>
+                <p class="team-bio">I'm Ginger Yin, a student at BDFZ Dalton Academy. I'm really interest in ingredient science and product safety, which is what inspired me to join the "Skincare Ingredient Scout" project. My goal is to turn this passion into a practical tool that can help people, especially my peers, to make safer and more informed skincare choices.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Name Input Section -->
+        <div class="name-input-section">
+          <h3>Join Our Team</h3>
+          <p>Enter your name to see yourself as part of our team!</p>
+          <div class="name-input-group">
+            <input 
+              type="text" 
+              id="name-input" 
+              class="name-input" 
+              placeholder="Enter your name"
+              oninput="handleNameInput(this.value)"
+            >
+            <button id="clear-name-btn" class="clear-btn" onclick="clearName()" style="display: none;">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 引入外部 JavaScript 文件 -->
+  <script src="js/about.js"></script>
+</body>
+</html>
