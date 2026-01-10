@@ -8,14 +8,18 @@ TODO: 接入 GNN 模型后，在 analyze_ingredients 函数中调用模型进行
 from flask import Flask, request, jsonify
 from flask_cors import CORS  # 处理跨域问题
 import logging
+import os
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# 创建 Flask 应用
-app = Flask(__name__)
-CORS(app)  # 允许跨域请求（前端和后端可能在不同端口）
+# 创建 Flask 应用，配置静态文件服务
+# static_folder 指向静态文件目录，static_url_path="" 表示静态文件在根路径
+app = Flask(__name__, 
+            static_folder='static', 
+            static_url_path='')
+CORS(app)  # 允许跨域请求
 
 
 # ============================================
@@ -155,15 +159,14 @@ def analyze_ingredients_with_gnn(ingredients):
 # ============================================
 
 @app.route('/')
-def index():
-    """根路径，返回 API 信息"""
-    return jsonify({
-        'message': 'Skincare Ingredient Scout API',
-        'version': '1.0.0',
-        'endpoints': {
-            '/api/analyze': 'POST - Analyze ingredients for conflicts'
-        }
-    })
+def home():
+    """根路径，返回首页"""
+    return app.send_static_file('index.html')
+
+@app.route('/about.html')
+def about():
+    """About 页面"""
+    return app.send_static_file('about.html')
 
 
 @app.route('/api/analyze', methods=['POST'])

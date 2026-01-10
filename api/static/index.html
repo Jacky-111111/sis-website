@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skincare Ingredient Scout - AI-powered Ingredient Interaction Detection</title>
+  
+  <!-- 引入外部 CSS 文件 -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ============================================
+       Navbar
+       ============================================ -->
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a href="index.html" class="logo">Skincare Ingredient Scout</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       Home Section
+       ============================================ -->
+  <section id="home-section" class="section active home-section">
+    <!-- Hero Area -->
+    <div class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <!-- Left: Title and Subtitle -->
+        <div class="hero-text">
+          <h1 class="hero-title">Skincare Ingredient Scout</h1>
+          <p class="hero-subtitle">AI-powered ingredient interaction & conflict detection</p>
+        </div>
+        
+        <!-- Right: Form Card -->
+        <div class="form-card">
+          <h2>Analyze Your Ingredients</h2>
+          
+          <!-- Tabs -->
+          <div class="tabs">
+            <button class="tab active" onclick="switchTab('text')">Text Detection</button>
+            <button class="tab" onclick="switchTab('photo')">Photo Detection</button>
+          </div>
+
+          <!-- Text Detection Tab -->
+          <div id="text-tab" class="tab-content active">
+            <label for="ingredients-input" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">
+              Enter ingredients (separated by commas, semicolons, or new lines)
+            </label>
+            <textarea 
+              id="ingredients-input" 
+              class="textarea-input" 
+              placeholder="e.g., retinol, vitamin C, niacinamide, hyaluronic acid"
+            ></textarea>
+          </div>
+
+          <!-- Photo Detection Tab -->
+          <div id="photo-tab" class="tab-content">
+            <div class="photo-upload-area">
+              <div class="photo-icon">📷</div>
+              <p style="font-weight: 500; color: #4b5563; margin-bottom: 0.5rem;">Photo Detection</p>
+              <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Coming soon</p>
+              <button class="upload-btn" disabled>Upload Photo</button>
+            </div>
+          </div>
+
+          <!-- Analyze Button -->
+          <button id="analyze-btn" class="analyze-btn" onclick="handleAnalyze()">Analyze</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Cards Section -->
+    <div class="features-section">
+      <div class="features-container">
+        <h2 class="features-title">Key Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3 class="feature-title">Why should we care about ingredient conflicts?</h3>
+            <p class="feature-description">Because nowadays many people, eapeicially teenager use skincare products frquently. They use them everyday in order to improve the apparant of their face and protect their skin  However the lack of knowledge in the hazarnd in mixing us e of skincare products will cause a opposite effect.Plus, almost all of them have no awareness about the hazard of mixing use of skincare products, which might cause demages on your face such as reddish and the the harm of teh sense of burning. We tend to creat this wbsite to remind people,eapecially teenager that whwther they kan use the skincare products together and the harzard in order to find the skincare product that fit them well and cause no dangers.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">How does our model detect the conflicts? </h3>
+            <p class="feature-description">Our model represents cosmetic ingredients as nodes in a graph and their potential interactions as connections. Using a Graph Neural Network (GNN), it learns from known chemical, dermatological, and safety data to capture how ingredients influence each other. The model then predicts whether combinations of ingredients across multiple products may cause conflicts, reduced effectiveness, or safety risks.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💡</div>
+            <h3 class="feature-title">How to use our product?</h3>
+            <p class="feature-description">To use our product, you only need to upload some photographs of the ingredient list of two or more skincare product, the click the "detect" button. Our system will use algorithms for analysis, and give back an three-level risk assessment within seconds: Green light indicats no significant conflict detected, yellow light suggests potential risk, which means you need to think twice before using, red light signals high-risk interactions, with explanation of the predicted chemical conflict mechanisms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p class="footer-text">© 2026 Skincare Ingredient Scout. All rights reserved.</p>
+        <p class="footer-subtext">AI-powered ingredient interaction & conflict detection system</p>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ============================================
+       Result Section
+       ============================================ -->
+  <section id="result-section" class="section result-section">
+    <div class="result-container">
+      <!-- Ingredients Display -->
+      <div id="ingredients-display" class="ingredients-display" style="display: none;">
+        <h2>Analyzed Ingredients</h2>
+        <div id="ingredient-chips" class="ingredient-chips"></div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="result-card" style="display: none;">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p style="font-size: 1.25rem; font-weight: 600;">Analyzing...</p>
+        </div>
+      </div>
+
+      <!-- Result Card -->
+      <div id="result-card" class="result-card" style="display: none;">
+        <h2 id="result-title" class="result-title"></h2>
+        <div class="risk-score">
+          <span id="risk-score-badge" class="risk-score-badge"></span>
+        </div>
+        <div class="result-summary">
+          <h3>Analysis Summary</h3>
+          <p id="result-summary-text"></p>
+        </div>
+        <button class="got-it-btn" onclick="showSection('home')">Got it</button>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 引入外部 JavaScript 文件 -->
+  <script src="js/script.js"></script>
+</body>
+</html>
