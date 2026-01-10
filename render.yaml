@@ -1,12 +1,7 @@
 services:
   - type: web
-    name: skincare-ingredient-scout-api
-    runtime: python3
+    name: sis-website
+    runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: cd api && python3 -m gunicorn --bind 0.0.0.0:$PORT --workers 2 main:app
-    envVars:
-      - key: PORT
-        value: 5000
-      - key: PYTHON_VERSION
-        value: 3.11.0
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 main:app
