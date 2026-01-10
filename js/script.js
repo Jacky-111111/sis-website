@@ -4,9 +4,8 @@
 let currentIngredients = [];
 
 // API endpoint configuration
-// TODO: 修改为你的后端 API 地址
-const API_BASE_URL = 'http://localhost:5000';  // Flask 默认端口
-// const API_BASE_URL = 'http://localhost:8000';  // FastAPI 默认端口
+const API_BASE_URL = 'https://sischeck.app';  // Production API URL
+// const API_BASE_URL = 'http://localhost:5000';  // Local development
 
 /* ============================================
    Section Navigation
