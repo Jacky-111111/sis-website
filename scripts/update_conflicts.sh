@@ -23,7 +23,8 @@ fi
 python3 -c "import pandas, openpyxl" 2>/dev/null
 if [ $? -ne 0 ]; then
     echo "📦 安装依赖..."
-    pip3 install pandas openpyxl
+    pip3 install --upgrade pip
+    pip3 install pandas==2.2.0 openpyxl==3.1.2
 fi
 
 # 运行处理脚本
