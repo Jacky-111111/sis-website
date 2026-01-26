@@ -7,12 +7,12 @@ flask-cors==4.0.0
 gunicorn==21.2.0
 
 # 数据处理
-pandas==2.2.0
+pandas>=2.2.3
 openpyxl==3.1.2
 
 # 数据处理（如果需要）
 # numpy==1.24.3
-# pandas==2.0.3
+# pandas>=2.2.3
 
 # 深度学习框架（接入 GNN 模型时需要）
 # torch==2.0.1
