@@ -40,3 +40,7 @@ Thumbs.db
 *.h5
 *.pkl
 models/
+
+# Excel 临时文件（保留原始 Excel 文件）
+~$*.xlsx
+~$*.xls

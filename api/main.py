@@ -14,6 +14,16 @@ import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# 导入冲突数据（如果存在）
+try:
+    from conflict_data import find_all_conflicts, check_conflict, INGREDIENT_CONFLICTS
+    HAS_CONFLICT_DATA = len(INGREDIENT_CONFLICTS) > 0
+    if HAS_CONFLICT_DATA:
+        logger.info(f"已加载 {len(INGREDIENT_CONFLICTS)} 个成分的冲突数据")
+except ImportError:
+    HAS_CONFLICT_DATA = False
+    logger.warning("conflict_data.py 未找到，使用默认冲突检测逻辑")
+
 # 创建 Flask 应用，配置静态文件服务
 # static_folder 指向静态文件目录，static_url_path="" 表示静态文件在根路径
 app = Flask(__name__, 
@@ -28,89 +38,136 @@ CORS(app)  # 允许跨域请求
 # ============================================
 def analyze_ingredients_mock(ingredients):
     """
-    Mock 函数：模拟成分冲突检测
+    成分冲突检测函数
+    优先使用 Excel 导入的冲突数据，如果没有则使用默认规则
     
     Args:
         ingredients: 成分列表，例如 ['retinol', 'vitamin C', 'niacinamide']
     
     Returns:
-        dict: 包含 status, riskScore, summary 的字典
+        dict: 包含 status, riskScore, summary, conflicts 的字典
     """
     # 转换为小写以便匹配
     lower_ingredients = [ing.lower() for ing in ingredients]
     
-    # 危险关键词
-    danger_keywords = [
-        'retinol',
-        'aha',
-        'bha',
-        'salicylic',
-        'benzoyl',
-        'vitamin c',
-        'niacinamide',
-        'ascorbic acid',
-        'glycolic acid',
-        'lactic acid'
-    ]
-    
-    # 检查危险关键词
-    found_danger_keywords = [
-        ing for ing in lower_ingredients
-        if any(keyword in ing for keyword in danger_keywords)
-    ]
-    
-    # 判断状态
-    has_multiple_danger = len(found_danger_keywords) >= 2
-    has_retinol_and_acid = (
-        any('retinol' in ing for ing in lower_ingredients) and
-        any(acid in ing for ing in lower_ingredients 
-            for acid in ['aha', 'bha', 'salicylic', 'glycolic', 'lactic'])
-    )
-    has_vitamin_c_and_niacinamide = (
-        any('vitamin c' in ing or 'ascorbic' in ing for ing in lower_ingredients) and
-        any('niacinamide' in ing for ing in lower_ingredients)
-    )
-    
-    is_danger = has_multiple_danger or has_retinol_and_acid or has_vitamin_c_and_niacinamide
-    
-    # 计算风险分数
-    if is_danger:
-        risk_score = min(100, 40 + len(found_danger_keywords) * 15)
-    else:
-        risk_score = max(0, len(found_danger_keywords) * 5)
-    
-    # 生成摘要
-    if is_danger:
-        if has_retinol_and_acid:
+    # 使用冲突数据（如果可用）
+    if HAS_CONFLICT_DATA:
+        # 查找所有冲突
+        conflicts = find_all_conflicts(lower_ingredients)
+        is_danger = len(conflicts) > 0
+        
+        # 计算风险分数（基于冲突数量）
+        if is_danger:
+            risk_score = min(100, 30 + len(conflicts) * 20)
+        else:
+            risk_score = 0
+        
+        # 生成摘要
+        if is_danger:
+            conflict_descriptions = []
+            for conflict in conflicts[:3]:  # 最多显示3个冲突
+                conflict_descriptions.append(
+                    f"{conflict['ingredient1']} + {conflict['ingredient2']}"
+                )
+            
+            if len(conflicts) > 3:
+                conflict_descriptions.append(f"and {len(conflicts) - 3} more")
+            
+            conflicts_text = ', '.join(conflict_descriptions)
             summary = (
-                'We detected a potential conflict: Retinol and acids (AHA/BHA) '
-                'can cause excessive irritation and dryness when used together. '
-                'Consider using them on alternate days or at different times (AM/PM).'
-            )
-        elif has_vitamin_c_and_niacinamide:
-            summary = (
-                'We detected a potential conflict: Vitamin C and Niacinamide may '
-                'cause flushing and reduce effectiveness when combined at high concentrations. '
-                'Consider applying them at different times of day.'
+                f'We detected {len(conflicts)} potential conflict(s): {conflicts_text}. '
+                'These ingredients may cause irritation or reduce effectiveness when combined. '
+                'Consider using them on alternate days or at different times.'
             )
         else:
             summary = (
-                'We detected multiple active ingredients that may cause irritation '
-                'or reduce effectiveness when combined. Please review the suggestions '
-                'and consider spacing out active ingredients across different days.'
+                'Your ingredient combination appears to be safe! No significant conflicts '
+                'were detected. You can proceed with confidence. Remember to patch test '
+                'new products and use sunscreen daily, especially with active ingredients.'
             )
-    else:
-        summary = (
-            'Your ingredient combination appears to be safe! No significant conflicts '
-            'were detected. You can proceed with confidence. Remember to patch test '
-            'new products and use sunscreen daily, especially with active ingredients.'
-        )
+        
+        return {
+            'status': 'danger' if is_danger else 'safe',
+            'riskScore': risk_score,
+            'summary': summary,
+            'conflicts': conflicts
+        }
     
-    return {
-        'status': 'danger' if is_danger else 'safe',
-        'riskScore': risk_score,
-        'summary': summary
-    }
+    # 默认规则（向后兼容）
+    else:
+        # 危险关键词
+        danger_keywords = [
+            'retinol',
+            'aha',
+            'bha',
+            'salicylic',
+            'benzoyl',
+            'vitamin c',
+            'niacinamide',
+            'ascorbic acid',
+            'glycolic acid',
+            'lactic acid'
+        ]
+        
+        # 检查危险关键词
+        found_danger_keywords = [
+            ing for ing in lower_ingredients
+            if any(keyword in ing for keyword in danger_keywords)
+        ]
+        
+        # 判断状态
+        has_multiple_danger = len(found_danger_keywords) >= 2
+        has_retinol_and_acid = (
+            any('retinol' in ing for ing in lower_ingredients) and
+            any(acid in ing for ing in lower_ingredients 
+                for acid in ['aha', 'bha', 'salicylic', 'glycolic', 'lactic'])
+        )
+        has_vitamin_c_and_niacinamide = (
+            any('vitamin c' in ing or 'ascorbic' in ing for ing in lower_ingredients) and
+            any('niacinamide' in ing for ing in lower_ingredients)
+        )
+        
+        is_danger = has_multiple_danger or has_retinol_and_acid or has_vitamin_c_and_niacinamide
+        
+        # 计算风险分数
+        if is_danger:
+            risk_score = min(100, 40 + len(found_danger_keywords) * 15)
+        else:
+            risk_score = max(0, len(found_danger_keywords) * 5)
+        
+        # 生成摘要
+        if is_danger:
+            if has_retinol_and_acid:
+                summary = (
+                    'We detected a potential conflict: Retinol and acids (AHA/BHA) '
+                    'can cause excessive irritation and dryness when used together. '
+                    'Consider using them on alternate days or at different times (AM/PM).'
+                )
+            elif has_vitamin_c_and_niacinamide:
+                summary = (
+                    'We detected a potential conflict: Vitamin C and Niacinamide may '
+                    'cause flushing and reduce effectiveness when combined at high concentrations. '
+                    'Consider applying them at different times of day.'
+                )
+            else:
+                summary = (
+                    'We detected multiple active ingredients that may cause irritation '
+                    'or reduce effectiveness when combined. Please review the suggestions '
+                    'and consider spacing out active ingredients across different days.'
+                )
+        else:
+            summary = (
+                'Your ingredient combination appears to be safe! No significant conflicts '
+                'were detected. You can proceed with confidence. Remember to patch test '
+                'new products and use sunscreen daily, especially with active ingredients.'
+            )
+        
+        return {
+            'status': 'danger' if is_danger else 'safe',
+            'riskScore': risk_score,
+            'summary': summary,
+            'conflicts': []
+        }
 
 
 # ============================================

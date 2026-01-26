@@ -3,5 +3,5 @@ services:
     name: sis-website
     runtime: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && bash scripts/update_conflicts.sh
     startCommand: cd api && gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 main:app
