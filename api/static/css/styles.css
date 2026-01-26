@@ -101,6 +101,11 @@ body {
   color: var(--rose-600);
 }
 
+.nav-links a.active {
+  color: var(--rose-600);
+  font-weight: 600;
+}
+
 /* ============================================
    Home Section Styles
    ============================================ */
