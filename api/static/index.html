@@ -35,6 +35,7 @@
         <!-- Left: Title and Subtitle -->
         <div class="hero-text">
           <h1 class="hero-title">Skincare Ingredient Scout</h1>
+          
           <p class="hero-subtitle">AI-powered ingredient interaction & conflict detection</p>
         </div>
         
@@ -42,32 +43,21 @@
         <div class="form-card">
           <h2>Analyze Your Ingredients</h2>
           
-          <!-- Tabs -->
-          <div class="tabs">
-            <button class="tab active" onclick="switchTab('text')">Text Detection</button>
-            <button class="tab" onclick="switchTab('photo')">Photo Detection</button>
-          </div>
+          <!-- Text Input -->
+          <label for="ingredients-input" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">
+            Enter ingredients (separated by commas, semicolons, or new lines)
+          </label>
+          <textarea 
+            id="ingredients-input" 
+            class="textarea-input" 
+            placeholder="e.g., retinol, vitamin C, niacinamide, hyaluronic acid"
+          ></textarea>
 
-          <!-- Text Detection Tab -->
-          <div id="text-tab" class="tab-content active">
-            <label for="ingredients-input" style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">
-              Enter ingredients (separated by commas, semicolons, or new lines)
-            </label>
-            <textarea 
-              id="ingredients-input" 
-              class="textarea-input" 
-              placeholder="e.g., retinol, vitamin C, niacinamide, hyaluronic acid"
-            ></textarea>
-          </div>
-
-          <!-- Photo Detection Tab -->
-          <div id="photo-tab" class="tab-content">
-            <div class="photo-upload-area">
-              <div class="photo-icon">📷</div>
-              <p style="font-weight: 500; color: #4b5563; margin-bottom: 0.5rem;">Photo Detection</p>
-              <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">Coming soon</p>
-              <button class="upload-btn" disabled>Upload Photo</button>
-            </div>
+          <!-- Photo Detection (Coming Soon) -->
+          <div class="photo-upload-area">
+            <div class="photo-icon">📷</div>
+            <p style="font-weight: 500; color: #4b5563; margin-bottom: 0.5rem;">Photo Detection</p>
+            <p style="font-size: 0.875rem; color: #6b7280;">Coming soon</p>
           </div>
 
           <!-- Analyze Button -->
