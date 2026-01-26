@@ -1,15 +1,55 @@
 """
 成分冲突数据
-从 Excel 文件自动生成
+从 data/Ingredient conflicts.xlsx 自动生成
 使用 scripts/process_conflicts.py 来更新此文件
 """
 
 # 冲突映射：key 是成分，value 是与该成分冲突的其他成分列表
-# 这个文件会通过运行 scripts/process_conflicts.py 自动生成
 INGREDIENT_CONFLICTS = {
-    # 示例数据（运行脚本后会被替换）
-    # 'retinol': ['aha', 'bha', 'salicylic acid'],
-    # 'vitamin c': ['niacinamide'],
+    'ahas': ['hydroquinone'],
+    'ahas/bahs': ['niacinamide', 'retinoids', 'vitamin c'],
+    'ahas/bhas': ['retinoids'],
+    'ahas/bhcs': ['vitamin c'],
+    'alcohol': ['protein'],
+    'alpha hydroxy acid': ['retinol'],
+    'benzoyl peroxide': ['hydroquinone', 'retinoids', 'retinol', 'vitamin c'],
+    'bhas': ['retinoids'],
+    'chemical exfoliants': ['physical exfoliants'],
+    'citrus/lavender essential oils': ['photosensitizing acids'],
+    'copper peptides': ['vitamin c'],
+    'formaldehyde-releasing preservatives': ['sulfites'],
+    'fragrance-rich essential oils': ['niacinamide'],
+    'fruit acid': ['retinol'],
+    'glycolic acid': ['salicylic acid'],
+    'high-concentration acids': ['high-concentration alkalis'],
+    'high-concentration alkalis': ['high-concentration acids'],
+    'high-concentration benzoyl peroxide': ['high-concentration salicylic acid'],
+    'high-concentration salicylic acid': ['high-concentration benzoyl peroxide'],
+    'high-content alcohol': ['retinoids'],
+    'high-molecular-weight hyaluronic acid': ['silicone-heavy occlusives'],
+    'hydroquinone': ['ahas', 'benzoyl peroxide', 'vitamin c'],
+    'incompatible vitamin e formulations': ['vitamin c'],
+    'low-ph niacinamide': ['pure vitamin c (ascorbic acid)'],
+    'niacinamide': ['ahas/bahs', 'fragrance-rich essential oils', 'vitamin c'],
+    'nicotinamid': ['vitamin c'],
+    'nicotinamide': ['salicylic acid'],
+    'oil-based skincare': ['water based'],
+    'peptides': ['sles/sls harsh surfactants'],
+    'photosensitizing acids': ['citrus/lavender essential oils'],
+    'physical exfoliants': ['chemical exfoliants'],
+    'protein': ['alcohol'],
+    'pure vitamin c (ascorbic acid)': ['low-ph niacinamide'],
+    'retinoides': ['salicylic acid'],
+    'retinoids': ['ahas/bahs', 'ahas/bhas', 'benzoyl peroxide', 'bhas', 'high-content alcohol', 'vitamin c'],
+    'retinol': ['alpha hydroxy acid', 'benzoyl peroxide', 'fruit acid', 'vitamin c'],
+    'salicylic acid': ['glycolic acid', 'nicotinamide', 'retinoides'],
+    'silicone-heavy occlusives': ['high-molecular-weight hyaluronic acid'],
+    'sles/sls harsh surfactants': ['peptides'],
+    'sulfites': ['formaldehyde-releasing preservatives'],
+    'unstable antioxidants': ['uv filter sunscreens'],
+    'uv filter sunscreens': ['unstable antioxidants'],
+    'vitamin c': ['ahas/bahs', 'ahas/bhcs', 'benzoyl peroxide', 'copper peptides', 'hydroquinone', 'incompatible vitamin e formulations', 'niacinamide', 'nicotinamid', 'retinoids', 'retinol'],
+    'water based': ['oil-based skincare'],
 }
 
 

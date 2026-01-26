@@ -290,7 +290,7 @@ if __name__ == '__main__':
     # 开发模式运行
     # 生产环境使用 gunicorn (通过 Procfile 启动)
     import os
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8002))
     app.run(
         host='0.0.0.0',  # 允许外部访问
         port=port,        # 从环境变量读取端口（Render 会自动设置）
