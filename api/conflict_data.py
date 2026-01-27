@@ -31,8 +31,7 @@ INGREDIENT_CONFLICTS = {
     'incompatible vitamin e formulations': ['vitamin c'],
     'low-ph niacinamide': ['pure vitamin c (ascorbic acid)'],
     'niacinamide': ['ahas/bahs', 'fragrance-rich essential oils', 'vitamin c'],
-    'nicotinamid': ['vitamin c'],
-    'nicotinamide': ['salicylic acid'],
+    'nicotinamide': ['salicylic acid', 'vitamin c'],
     'oil-based skincare': ['water based'],
     'peptides': ['sles/sls harsh surfactants'],
     'photosensitizing acids': ['citrus/lavender essential oils'],
@@ -48,7 +47,7 @@ INGREDIENT_CONFLICTS = {
     'sulfites': ['formaldehyde-releasing preservatives'],
     'unstable antioxidants': ['uv filter sunscreens'],
     'uv filter sunscreens': ['unstable antioxidants'],
-    'vitamin c': ['ahas/bahs', 'ahas/bhcs', 'benzoyl peroxide', 'copper peptides', 'hydroquinone', 'incompatible vitamin e formulations', 'niacinamide', 'nicotinamid', 'retinoids', 'retinol'],
+    'vitamin c': ['ahas/bahs', 'ahas/bhcs', 'benzoyl peroxide', 'copper peptides', 'hydroquinone', 'incompatible vitamin e formulations', 'niacinamide', 'nicotinamide', 'retinoids', 'retinol'],
     'water based': ['oil-based skincare'],
 }
 
