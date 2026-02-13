@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/sis-icon_circled.png" type="image/png">
+  <title>Algorithms - Skincare Ingredient Scout</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-content">
+      <a href="index.html" class="logo">Skincare Ingredient Scout</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="algorithms.html" class="active">Algorithms</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="about-section algorithms-section">
+    <div class="about-hero">
+      <div class="about-hero-background"></div>
+      <div class="about-hero-overlay"></div>
+      <div class="about-hero-content">
+        <h1 class="about-hero-title">Algorithms</h1>
+        <p class="about-hero-subtitle">How we detect ingredient conflicts and assess risk</p>
+      </div>
+    </div>
+
+    <div class="about-container algorithms-container">
+      <div class="about-card">
+        <p class="algo-intro">
+          Our system uses a structured pipeline: a curated conflict knowledge base, runtime pairwise detection, risk scoring, and user-facing summaries. When the knowledge base is unavailable, a rule-based fallback ensures continuity. The design also allows future extension with a Graph Neural Network for richer ingredient-interaction modeling.
+        </p>
+
+        <!-- Section 1: Data & Conflict Knowledge Base -->
+        <div class="algo-section">
+          <h2>1. Data & Conflict Knowledge Base</h2>
+          <p>
+            We gather conflict pairs from authoritative sources (e.g. EU CosIng and trusted dermatological references), then organize them into a single dataset. Each row includes the two ingredients in conflict, the <strong>type of conflict</strong>, a <strong>reason description</strong>, and the <strong>source</strong>. We maintain dozens of commonly used skincare-ingredient conflict pairs and store this dataset with the application so it can be read on every run and updated regularly.
+          </p>
+          <div class="algo-example-box">
+            <h4>Example: One row in the dataset</h4>
+            <table class="algo-table">
+              <thead>
+                <tr>
+                  <th>Ingredient A</th>
+                  <th>Ingredient B</th>
+                  <th>Type of Conflict</th>
+                  <th>Why (summary)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Retinol</td>
+                  <td>Benzoyl Peroxide</td>
+                  <td>Counterproductive</td>
+                  <td>Using these together can deactivate each other and reduce effectiveness; may cause dryness, peeling, and irritation. Use at different times (e.g. retinol at night, benzoyl peroxide in the morning) or on alternating days.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            A preprocessing step reads the dataset and builds a <strong>bidirectional conflict map</strong>: each ingredient is a key, and its value is the list of ingredients it conflicts with. Thus both A→B and B→A lookups work (e.g. “retinol” lists “benzoyl peroxide” and “benzoyl peroxide” lists “retinol”). This map is what the backend uses for fast conflict checks.
+          </p>
+          <figure class="algo-diagram">
+            <figcaption>From dataset to conflict map</figcaption>
+            <div class="flow-diagram">
+              <div class="flow-node">Conflict dataset<br><small>(Ingredient A, B, type, reason, source)</small></div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">Preprocessing</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">Bidirectional conflict map<br><small>(each ingredient → list of conflicts)</small></div>
+            </div>
+          </figure>
+        </div>
+
+        <!-- Section 2: Runtime conflict detection -->
+        <div class="algo-section">
+          <h2>2. Runtime Conflict Detection</h2>
+          <p>
+            When you submit a list of ingredients, the backend first <strong>normalizes</strong> them (e.g. lowercasing and consistent formatting). It then performs a <strong>pairwise scan</strong> over all pairs of ingredients. For each pair (A, B), it checks whether B appears in A’s conflict list in the pre-built map. Every such match is reported as a detected conflict (e.g. <em>retinol + benzoyl peroxide</em>).
+          </p>
+          <div class="algo-example-box">
+            <h4>Example: User input and detection</h4>
+            <p><strong>Input:</strong> <code>Retinol, Benzoyl Peroxide, Niacinamide</code></p>
+            <p><strong>After normalization:</strong> <code>retinol, benzoyl peroxide, niacinamide</code></p>
+            <p><strong>Pairs checked:</strong> (retinol, benzoyl peroxide), (retinol, niacinamide), (benzoyl peroxide, niacinamide).</p>
+            <p><strong>Detected conflicts:</strong> retinol + benzoyl peroxide (listed in the conflict map).</p>
+          </div>
+          <figure class="algo-diagram">
+            <figcaption>Runtime detection flow</figcaption>
+            <div class="flow-diagram">
+              <div class="flow-node">User ingredient list</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">Normalize (lowercase, format)</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">Pairwise scan</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">Lookup in conflict map</div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-node">Detected conflicts</div>
+            </div>
+          </figure>
+        </div>
+
+        <!-- Section 3: Risk evaluation -->
+        <div class="algo-section">
+          <h2>3. Risk Evaluation & Summary</h2>
+          <p>
+            The system assigns an overall <strong>safety label</strong>: if any conflict pair is detected, the result is <strong>danger</strong>; if none are found, the result is <strong>safe</strong>. A <strong>risk score</strong> from 0 to 100 is computed: when at least one conflict exists, the score is <strong>min(100, 30 + 20 × number of conflict pairs)</strong>; when no conflicts are found, the score is <strong>0</strong>.
+          </p>
+          <div class="algo-formula-box">
+            <h4>Risk score formula</h4>
+            <p>If conflicts detected: <strong>risk score = min(100, 30 + 20 × number of conflict pairs)</strong></p>
+            <p>If no conflicts: <strong>risk score = 0</strong></p>
+          </div>
+          <div class="algo-example-box">
+            <h4>Example: Risk score</h4>
+            <p>1 conflict pair → score = 30 + 20×1 = <strong>50</strong></p>
+            <p>2 conflict pairs → score = 30 + 20×2 = <strong>70</strong></p>
+            <p>4+ conflict pairs → score = min(100, 30 + 80) = <strong>100</strong></p>
+          </div>
+          <p>
+            A short <strong>user-facing summary</strong> is generated: when conflicts are found, it lists the flagged pairs (e.g. up to a few, with “and X more” if needed) and recommends separating use by time or alternating days. When no conflicts are found, it states that the combination appears safe and still advises patch testing and daily sunscreen use.
+          </p>
+        </div>
+
+        <!-- Section 4: Fallback -->
+        <div class="algo-section">
+          <h2>4. Fallback: Rule-Based Detection</h2>
+          <p>
+            If the dataset-derived conflict map is missing or empty, the backend uses a <strong>lightweight keyword-based ruleset</strong>. It looks for common active ingredients (e.g. retinol, AHA/BHA, vitamin C, niacinamide) in the user’s list and applies simple interaction heuristics—for example, retinol with acids, or vitamin C with niacinamide—to estimate a danger/safe label and a risk score. This keeps the service usable even when the main knowledge base is not loaded.
+          </p>
+        </div>
+
+        <!-- Section 5: Future extension -->
+        <div class="algo-section">
+          <h2>5. Future Extension: Graph Neural Network</h2>
+          <p>
+            The current rule-based layer is designed to be replaceable. We plan to introduce a <strong>Graph Neural Network (GNN)</strong> that models ingredients as <strong>nodes</strong> and their interactions as <strong>edges</strong>. Such a model can better capture complex relationships and improve conflict detection and risk estimation when ingredients are not fully covered by the existing dataset.
+          </p>
+          <figure class="algo-diagram">
+            <figcaption>Planned GNN concept</figcaption>
+            <div class="flow-diagram flow-diagram-vertical">
+              <div class="flow-node">Ingredients → nodes</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node">Interactions → edges</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node">GNN predicts conflicts & risk</div>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Optional: no special JS needed for static content
+  </script>
+</body>
+</html>

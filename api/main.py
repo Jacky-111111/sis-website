@@ -226,6 +226,12 @@ def about():
     return app.send_static_file('about.html')
 
 
+@app.route('/algorithms.html')
+def algorithms():
+    """Algorithms 页面"""
+    return app.send_static_file('algorithms.html')
+
+
 @app.route('/api/analyze', methods=['POST'])
 def analyze():
     """
