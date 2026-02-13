@@ -83,6 +83,10 @@ body {
   color: var(--rose-500);
 }
 
+.logo-short {
+  display: none;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -896,6 +900,13 @@ body {
    Responsive Design
    ============================================ */
 @media (max-width: 768px) {
+  .logo-full {
+    display: none;
+  }
+  .logo-short {
+    display: inline;
+  }
+
   .hero-content {
     grid-template-columns: 1fr;
     gap: 2rem;
